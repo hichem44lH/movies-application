@@ -1,5 +1,5 @@
 /* ============================================
-   MOVIEZONE - MOVIE APP STYLES
+   MOVIEZONE - MOVIE APP WITH ROUTER
    ============================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap');
@@ -15,7 +15,6 @@
   --text-light: #ffffff;
   --text-muted: #b3b3b3;
   --gradient-red: linear-gradient(135deg, #e50914 0%, #b20710 100%);
-  --gradient-dark: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
 }
 
 * {
@@ -68,12 +67,6 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: all 0.3s !important;
-}
-
-.btn-add-movie:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 20px rgba(229, 9, 20, 0.4);
 }
 
 .btn-add-movie span {
@@ -85,6 +78,7 @@ body {
    ============================================ */
 .main-container {
   padding: 40px 20px;
+  min-height: calc(100vh - 200px);
 }
 
 .app-header {
@@ -95,7 +89,6 @@ body {
   font-family: 'Playfair Display', serif;
   font-size: 3rem;
   font-weight: 700;
-  margin-bottom: 10px;
   background: var(--gradient-red);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -158,10 +151,6 @@ body {
   color: var(--text-muted);
 }
 
-.rating-filter {
-  padding: 10px 0;
-}
-
 .rating-slider {
   width: 100%;
 }
@@ -170,29 +159,12 @@ body {
   background: var(--primary) !important;
 }
 
-.rating-labels {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-  color: var(--text-muted);
-  font-size: 0.9rem;
-}
-
-.current-rating {
-  color: var(--accent);
-  font-weight: 600;
-}
-
 /* ============================================
    RESULTS INFO
    ============================================ */
 .results-info {
   margin-bottom: 20px;
   color: var(--text-muted);
-}
-
-.results-info p {
-  margin: 0;
 }
 
 /* ============================================
@@ -244,23 +216,62 @@ body {
   font-size: 1rem;
 }
 
+/* Play overlay on hover */
+.movie-play-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.movie-card:hover .movie-play-overlay {
+  opacity: 1;
+}
+
+.play-icon {
+  font-size: 4rem;
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+
+.play-text {
+  color: white;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
 .movie-card-body {
-  padding: 25px;
+  padding: 20px;
+}
+
+.movie-year {
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-bottom: 5px;
 }
 
 .movie-title {
   font-family: 'Playfair Display', serif;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 700;
   color: var(--text-light);
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .movie-description {
   color: var(--text-muted);
-  font-size: 0.9rem;
-  line-height: 1.7;
-  margin-bottom: 15px;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin-bottom: 12px;
 }
 
 .movie-rating-section {
@@ -272,6 +283,7 @@ body {
 .rating-text {
   color: var(--accent);
   font-weight: 600;
+  font-size: 0.9rem;
 }
 
 /* ============================================
@@ -283,8 +295,7 @@ body {
 }
 
 .star {
-  font-size: 1.3rem;
-  cursor: default;
+  font-size: 1.2rem;
 }
 
 .star.full {
@@ -315,13 +326,153 @@ body {
   margin-bottom: 20px;
 }
 
-.no-results h3 {
-  color: var(--text-light);
-  margin-bottom: 10px;
+/* ============================================
+   MOVIE DETAILS PAGE
+   ============================================ */
+.movie-details-page {
+  background: var(--secondary);
+  min-height: 100vh;
 }
 
-.no-results p {
+.details-header {
+  background: var(--dark);
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-back {
+  background: transparent !important;
+  border: 2px solid var(--primary) !important;
+  color: var(--primary) !important;
+  padding: 10px 25px !important;
+  border-radius: 50px !important;
+  font-weight: 600 !important;
+  transition: all 0.3s !important;
+}
+
+.btn-back:hover {
+  background: var(--primary) !important;
+  color: white !important;
+}
+
+.details-container {
+  padding: 50px 20px;
+}
+
+.details-poster-wrapper {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.details-poster {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.details-info {
+  padding: 20px 0;
+}
+
+.details-badges {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.detail-badge {
+  padding: 8px 20px !important;
+  border-radius: 25px !important;
+  font-size: 0.9rem !important;
+}
+
+.details-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--text-light);
+  margin-bottom: 20px;
+}
+
+.details-rating {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.details-rating-text {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+.details-description {
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.details-description h3 {
+  color: var(--primary);
+  font-weight: 700;
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+}
+
+.details-description p {
   color: var(--text-muted);
+  line-height: 1.9;
+  font-size: 1.05rem;
+}
+
+/* ============================================
+   TRAILER SECTION
+   ============================================ */
+.trailer-section {
+  margin-top: 50px;
+  padding: 40px 0;
+}
+
+.trailer-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  color: var(--text-light);
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.trailer-wrapper {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.trailer-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* ============================================
+   NOT FOUND
+   ============================================ */
+.not-found {
+  padding: 100px 20px;
+}
+
+.not-found h1 {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
 }
 
 /* ============================================
@@ -387,11 +538,6 @@ body {
   font-weight: 600 !important;
 }
 
-.btn-cancel:hover {
-  border-color: white !important;
-  color: white !important;
-}
-
 .btn-submit {
   background: var(--gradient-red) !important;
   border: none !important;
@@ -406,7 +552,6 @@ body {
 .movie-footer {
   background: var(--dark);
   padding: 40px 0;
-  margin-top: 60px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -420,11 +565,24 @@ body {
   margin-top: 10px !important;
 }
 
+.btn-back-bottom {
+  background: var(--gradient-red) !important;
+  border: none !important;
+  padding: 12px 30px !important;
+  border-radius: 50px !important;
+  font-weight: 600 !important;
+  margin-bottom: 20px;
+}
+
 /* ============================================
    RESPONSIVE
    ============================================ */
 @media (max-width: 768px) {
   .app-title {
+    font-size: 2rem;
+  }
+
+  .details-title {
     font-size: 2rem;
   }
 
@@ -439,5 +597,9 @@ body {
 
   .brand-text {
     font-size: 1.4rem;
+  }
+
+  .trailer-title {
+    font-size: 1.5rem;
   }
 }
